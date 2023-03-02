@@ -1,10 +1,12 @@
 package Kodlama.io.Devs.business.concrete;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import Kodlama.io.Devs.business.abstracts.LanguageService;
+import Kodlama.io.Devs.business.responses.GetAllLanguageResponse;
 import Kodlama.io.Devs.dataAccess.abstracts.LanguageDao;
 import Kodlama.io.Devs.entities.Language;
 
@@ -16,9 +18,18 @@ public class LanguageManager implements LanguageService{
 		this.languageDao = languageDao;
 	}
 	@Override
-	public List<Language> getAll() {
-		var result = languageDao.getAll();
-		return result;
+	public List<GetAllLanguageResponse> getAll() {
+		var languages = languageDao.findAll();
+		List<GetAllLanguageResponse> getAllLanguages = new ArrayList<>();
+		
+		
+		for (Language language : languages) {
+			GetAllLanguageResponse getAllLanguageResponse = new GetAllLanguageResponse();
+			getAllLanguageResponse.setId(language.getId());
+			getAllLanguageResponse.setName(language.getName());
+			getAllLanguages.add(getAllLanguageResponse);
+		}
+		return getAllLanguages;
 	}
 
 	@Override
@@ -26,14 +37,14 @@ public class LanguageManager implements LanguageService{
 		programmingLanguageCheckNameRepetition(language);
 		programmingLanguageNameCannotBeBlank(language);
 		programmingLanguageCannotBeBlank(language);
-		languageDao.add(language);
+		languageDao.save(language);
 		System.out.println(language.getName() + " eklendi");
 	}
 
 	@Override
 	public Language getById(int id) {
-		var result = languageDao.getById(id);
-		return result;
+		//var result = languageDao.getById(id);
+		return null;
 	}
 
 	@Override
@@ -58,7 +69,7 @@ public class LanguageManager implements LanguageService{
 		}
 	}
 	void programmingLanguageCheckNameRepetition(Language language) throws Exception{
-		var items = languageDao.getAll();
+		var items = languageDao.findAll();
 		for (var item : items) {
 			if(item.getName().equals(language.getName())) {
 				throw new Exception("isimler tekrar edemez..");

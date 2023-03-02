@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import Kodlama.io.Devs.business.abstracts.LanguageService;
+import Kodlama.io.Devs.business.responses.GetAllLanguageResponse;
 import Kodlama.io.Devs.entities.Language;
 
 @RestController
@@ -22,7 +23,7 @@ public class LanguagesController {
 		this.languageService = languageService;
 	}
 	@GetMapping("/getall")
-	public List<Language> getAll(){
+	public List<GetAllLanguageResponse > getAll(){
 		return languageService.getAll();
 	}
 	@GetMapping("/getbyid/{id}")
